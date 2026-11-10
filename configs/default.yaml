@@ -1,0 +1,50 @@
+seed: 20261030
+dtype: float32            # validation overrides to float64
+backend: jax              # jax | cuda | numpy | cpp
+
+market:
+  spot: 100.0
+  rate: 0.03              # flat cc rate when no curve is loaded
+  div_yield: 0.01
+  curve: null             # or data/processed/yields.parquet with as_of date
+  as_of: null
+
+models:
+  gbm:
+    vol: 0.20
+  heston:
+    v0: 0.04
+    kappa: 1.5
+    theta: 0.04
+    xi: 0.5
+    rho: -0.7
+    scheme: full_truncation   # full_truncation | qe
+  localvol:
+    surface: synthetic        # synthetic | path to surface.json
+    grid: {n_k: 64, n_t: 48, k_min: -1.0, k_max: 1.0, t_max: 2.0}
+    synthetic_ssvi: {theta_per_year: 0.04, rho: -0.7, phi: {type: power_law, eta: 1.0, gamma: 0.5}}
+
+rng:
+  kind: philox              # philox | sobol-bb | sobol | threefry
+  antithetic: true
+  sobol: {scramble: true, replications: 32, chunk_paths: 262144}
+
+simulation:
+  n_paths: 1048576          # must be 2^m when kind is sobol*
+  steps_per_year: 252
+  checkpoint_every: 16      # AAD remat block (steps)
+
+products:
+  european: {type: call, strike: 100.0, maturity: 1.0}
+  asian:    {type: call, strike: 100.0, maturity: 1.0, n_fixings: 12, control_variate: geometric}
+  barrier:  {type: call, strike: 100.0, maturity: 1.0, barrier: 120.0, kind: up-out, monitoring: discrete, n_monitor: 252}
+  american: {type: put, strike: 40.0, maturity: 1.0, exercise_per_year: 50, basis: power, degree: 3,
+             n_paths_regression: 100000, n_paths_pricing: 100000}
+
+greeks:
+  fd: {rel_bump: 1.0e-4, scheme: central}
+
+cuda:
+  block_size: 256
+  variant: fused            # fused | store
+  arch: null                # null = detect compute capability

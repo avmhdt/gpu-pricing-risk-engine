@@ -1,0 +1,107 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-type:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v10.3.3
+        with:
+          enable-cache: true
+          python-version: "3.12"
+      - run: uv sync --frozen --group dev
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+      - run: uv run mypy
+      - name: clang-format
+        run: |
+          sudo apt-get install -y --no-install-recommends clang-format-18 > /dev/null
+          clang-format-18 --dry-run --Werror cpp/include/gpre/*.hpp cpp/tests/*.cpp \
+            src/gpre/cuda/kernels/*.cuh src/gpre/cuda/kernels/*.cu
+      - name: No tracked data (AC-W-12, NFR-05)
+        run: test -z "$(git ls-files data)"
+      - name: gitleaks
+        env:
+          GITLEAKS_VERSION: 8.30.1
+        run: |
+          curl -sSfL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" \
+            | sudo tar -xz -C /usr/local/bin gitleaks
+          gitleaks git --redact --no-banner -v .
+
+  test-cpu:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      JAX_ENABLE_X64: "1"
+      JAX_PLATFORMS: cpu
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.3.3
+        with:
+          enable-cache: true
+          python-version: "3.12"
+      - run: uv sync --frozen --group dev
+      - name: pytest (CPU, coverage gate 85%)
+        run: uv run pytest -m "not gpu and not bench and not data" --cov=gpre --cov-report=term --cov-fail-under=85
+
+  cpp:
+    name: cpp (${{ matrix.name }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: release, sanitize: "" }
+          - { name: asan-ubsan, sanitize: "address,undefined" }
+          - { name: tsan, sanitize: "thread" }
+    steps:
+      - uses: actions/checkout@v7
+      - name: Toolchain
+        run: |
+          sudo apt-get update > /dev/null
+          sudo apt-get install -y --no-install-recommends ninja-build g++-13 clang-tidy-18 > /dev/null
+          # TSan needs fewer ASLR bits than the runner kernel's default.
+          sudo sysctl vm.mmap_rnd_bits=28
+      - name: Configure
+        run: >-
+          cmake -S cpp -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_CXX_COMPILER=g++-13 -DGPRE_SANITIZE="${{ matrix.sanitize }}"
+      - run: cmake --build build -j 4
+      - run: ctest --test-dir build --output-on-failure
+        env:
+          TSAN_OPTIONS: halt_on_error=1
+          UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
+      - name: clang-tidy
+        if: matrix.name == 'release'
+        run: clang-tidy-18 -p build cpp/tests/test_philox.cpp
+
+  cuda-compile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    container: nvidia/cuda:12.9.1-devel-ubuntu24.04
+    steps:
+      - uses: actions/checkout@v7
+      - name: nvcc compile check (no GPU needed)
+        run: |
+          nvcc --version
+          for arch in sm_70 sm_80 sm_89; do
+            nvcc -std=c++17 -arch=$arch -Wno-deprecated-gpu-targets -Werror all-warnings \
+              -c src/gpre/cuda/kernels/paths.cu -o /tmp/paths_$arch.o
+          done
+          ls -la /tmp/paths_*.o

@@ -1,0 +1,14 @@
+# VaR/ES and backtest settings (D-07, D-08). Used from M5.
+confidence_var: 0.99
+confidence_es: 0.975
+horizon_days: 1
+window_days: 500
+ewma_lambda: 0.94
+mc_scenarios: 10000
+mc_distribution: normal      # normal | student_t (nu = 5, Should)
+inner_paths: 4096
+nested_bias_check: {inner_paths: 65536, positions: 500}
+backtest: {start: 2019-01-02, end: 2025-12-31}
+vol_shock: vix_relative      # D-08: 1Y ATM vol = VIX/100 x beta_i, shock = relative VIX change
+beta_window_days: 250
+quantile_interpolation: linear

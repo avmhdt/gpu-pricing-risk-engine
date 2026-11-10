@@ -1,0 +1,56 @@
+# VaR universe (D-14): SPY plus 49 liquid US large caps with continuous daily history in the
+# price source over the window below. The rule and its survivorship bias are recorded in
+# docs/decisions.md; the list is provisional until M5 confirms full history in Sharadar.
+history: {start: 2012-01-03, end: 2025-12-31}
+funds: [SPY]             # Sharadar SFP; everything else is SEP
+symbols:
+  - SPY
+  - AAPL
+  - MSFT
+  - AMZN
+  - NVDA
+  - JPM
+  - JNJ
+  - XOM
+  - PG
+  - WMT
+  - KO
+  - PEP
+  - MRK
+  - PFE
+  - CVX
+  - INTC
+  - CSCO
+  - ORCL
+  - IBM
+  - HD
+  - MCD
+  - DIS
+  - BA
+  - CAT
+  - VZ
+  - BAC
+  - C
+  - WFC
+  - GS
+  - MS
+  - AXP
+  - UNH
+  - ABT
+  - AMGN
+  - BMY
+  - LLY
+  - MDT
+  - HON
+  - UPS
+  - LMT
+  - NKE
+  - SBUX
+  - COST
+  - LOW
+  - TGT
+  - QCOM
+  - TXN
+  - ADBE
+  - CMCSA
+  - GILD

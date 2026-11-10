@@ -2,7 +2,7 @@
 
 > Monte Carlo pricing, Greeks and portfolio risk on a GPU, validated against closed forms and benchmarked against CPU.
 
-**Status:** planning
+**Status:** in development (M1: scaffolding, environment and data access)
 
 | | |
 |---|---|

@@ -1,0 +1,12 @@
+{
+  "source": "Random123 tests/kat_vectors (github.com/DEShawResearch/random123), philox4x32 lines",
+  "format": "counter[4], key[2], expected[4] as hex uint32 words",
+  "vectors": [
+    {"rounds": 7, "counter": ["00000000", "00000000", "00000000", "00000000"], "key": ["00000000", "00000000"], "expected": ["5f6fb709", "0d893f64", "4f121f81", "4f730a48"]},
+    {"rounds": 7, "counter": ["ffffffff", "ffffffff", "ffffffff", "ffffffff"], "key": ["ffffffff", "ffffffff"], "expected": ["5207ddc2", "45165e59", "4d8ee751", "8c52f662"]},
+    {"rounds": 7, "counter": ["243f6a88", "85a308d3", "13198a2e", "03707344"], "key": ["a4093822", "299f31d0"], "expected": ["4dfccaba", "190a87f0", "c47362ba", "b6b5242a"]},
+    {"rounds": 10, "counter": ["00000000", "00000000", "00000000", "00000000"], "key": ["00000000", "00000000"], "expected": ["6627e8d5", "e169c58d", "bc57ac4c", "9b00dbd8"]},
+    {"rounds": 10, "counter": ["ffffffff", "ffffffff", "ffffffff", "ffffffff"], "key": ["ffffffff", "ffffffff"], "expected": ["408f276d", "41c83b0e", "a20bc7c6", "6d5451fd"]},
+    {"rounds": 10, "counter": ["243f6a88", "85a308d3", "13198a2e", "03707344"], "key": ["a4093822", "299f31d0"], "expected": ["d16cfe09", "94fdcceb", "5001e420", "24126ea1"]}
+  ]
+}
