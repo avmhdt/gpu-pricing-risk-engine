@@ -1,0 +1,13 @@
+{
+  "note": "CPU part; the CUDA bit-exactness checks run in tests/gpu",
+  "run_id": "20261110T022403Z-53f5d0",
+  "seed": 20261030,
+  "suite": "rng",
+  "summary": {
+    "jax_f32_uniforms_equal_numpy": true,
+    "jax_words_equal_numpy": true,
+    "n_blocks": 64,
+    "n_paths": 4096,
+    "passed": true
+  }
+}

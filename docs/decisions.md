@@ -12,7 +12,8 @@ Owner decisions that apply to this project, copied from the portfolio's `DECISIO
 | Merging | Feature branch per milestone, PR, squash auto-merge with `gh pr merge --auto --squash` as `avmhdt` once CI is green; branch protection on once CI exists |
 | Country | Cayman Islands (`OWNER_COUNTRY=KY`) |
 | P-10, D-02 cloud GPU budget | USD 50 cap, approved. Spend log in `results/cloud_spend.csv`; GPU work pauses at 80% of the cap until the owner confirms; the instance is shut down after every session |
-| D-16 cloud GPU provider | **Open.** The agent researches hourly providers that serve the Cayman Islands and brings two or three options before M2; the owner picks |
+| D-16 cloud GPU provider | **Hyperstack**, chosen by the owner on 2026-11-09 from three researched options: "RTX A4000 at $0.15/h (about 265 h for $40), A100 at $1.35/h. A prepaid balance is a hard cap; ID check at sign-up. Every session must end in hibernate or delete, never plain shut-off. GPU profiler access is unconfirmed and gets tested in the first 10 minutes." The owner is currently in Brazil, not the Cayman Islands, in case sign-up or terms depend on location. The research is in `docs/cloud_gpu_runbook.md` |
+| D-03 reference GPU | The Hyperstack RTX A4000 (Ampere, sm_86, 16 GB). An A100 session is optional for the FP64 part of the precision study (AC-H-06) |
 | P-17 provider account | Owner creates the account, enters payment details and sets a provider-side billing limit at or below the cap. Agents never rent or pay |
 | D-01 compute platform | Cloud GPU; this PC has no NVIDIA GPU, so local work is CPU-only. No NVIDIA driver or CUDA toolkit is installed locally |
 | D-15 price source | Sharadar's direct API (SEP stocks, SFP for SPY), key in `SHARADAR_API_KEY`, sent only in the `x-api-key` header. Fallback and cross-check: the owner's local Stooq snapshot |
@@ -21,6 +22,7 @@ Owner decisions that apply to this project, copied from the portfolio's `DECISIO
 | Benchmarks | Published GPU and CPU benchmark runs wait until no multi-week capture runs on this PC (after about 2026-11-29) |
 | Shared PC limits | Downloads at most 10 MB/s; heavy runs at most 8 threads at `nice 10`; stop if free memory falls below 30 GB; keep `D:` above 150 GB free; never restart WSL |
 | Attribution | No AI or assistant attribution anywhere in the repository |
+| Owner actions still open | Before the first GPU session: create the Hyperstack account, load a prepaid balance at or below USD 50, add an SSH key (P-17). Before M5: add `SHARADAR_API_KEY` to `.env` (P-16); `FRED_API_KEY` is optional |
 | Other spec defaults | Every other decision in SPEC §3 with a default stands as written (D-03 to D-14, D-17 MIT) |
 
 ## Agent choices
@@ -74,3 +76,37 @@ Owner decisions that apply to this project, copied from the portfolio's `DECISIO
   local in `results/logs/` (git-ignored).
 - **Development venv.** Kept on WSL ext4 via `UV_PROJECT_ENVIRONMENT`
   (`~/build/gpu-pricing-risk-engine/venv`), since `/mnt/d` is slow from WSL.
+
+### M2 (2026-11-09, CPU side; GPU checks pending the first Hyperstack session)
+
+- **float32 uniforms use 23 bits,** `((x >> 9) + 0.5) · 2^-23`, not the spec's
+  `((x >> 8) + 0.5) · 2^-24`, which rounds to 1.0 in float32 for the largest words and gives an
+  infinite normal about once in 2^24 draws. The layout and counter use are unchanged, and the
+  tail bound |z| ≤ 5.3 matches the spec's unit-test expectation. float64 uniforms use 52 bits
+  from two words, so one Philox call gives 2 float64 normals (steps 2j, 2j+1). Details are in
+  `docs/rng.md`.
+- **Fused-kernel partial sums are per 64-path tile,** not per CUDA block, so the result is
+  bit-identical across block sizes (64 to 512) and grid sizes (NFR-02). The kernel parameter
+  names `block_sum` and `block_sumsq` from SPEC §10 are kept.
+- **float64 kernels.** AC-W-01 asks for float64 on every backend, so `gbm_paths_store_f64` and
+  `gbm_european_fused_f64` exist next to the float32 kernels named in §10. They also serve the
+  precision study (AC-H-06).
+- **Antithetic SE on CUDA.** Tile sums cannot give the variance of pair averages, so antithetic
+  CUDA runs price through the store kernel; the fused kernel is used without antithetics.
+- **European validation grid** uses one time step per case: GBM log-Euler steps are exact, so the
+  terminal law does not depend on the step count. Each of the 36 cases gets its own Philox
+  stream (`stream_id(case, "validation")`), so the errors are independent and the |z| > 2 share
+  test is meaningful. Seed, grid and the 3-SE tolerance are as in §12.
+- **Sobol path count.** In `price_mc`, `n_paths` is the total over R = 32 scramblings, so MC and
+  QMC compare at equal cost.
+- **Path coefficients** are rounded to the path precision on every backend, as the kernels
+  receive them, so NumPy, JAX and CUDA paths agree to float32 rounding.
+- **CuPy picks the cubin architecture.** No `-arch` flag is passed to NVRTC, so CuPy compiles to
+  native code and the driver never has to JIT PTX from a newer toolkit.
+- **Cloud sessions end by deletion by default.** Hyperstack bills a SHUTOFF VM in full and does
+  not document whether the A4000 flavor can hibernate, so `scripts/cloud_setup.sh` rebuilds the
+  environment in each session and the runbook (`docs/cloud_gpu_runbook.md`) ends with Delete.
+  Results come back by `rsync` and are committed from this PC, so no GitHub credentials go on
+  the VM.
+- **Throughput numbers from M2 are preliminary.** The published speedup table is M6, after the
+  multi-week runs on this PC end.
