@@ -56,6 +56,16 @@ TEST(Philox, SeedSplitsIntoLowAndHighWords) {
   EXPECT_EQ(words[0], 0x6627e8d5U);
 }
 
+// Uniform conversions are exact and strictly inside (0, 1), as in gpre.rng.streams.
+TEST(Philox, UniformEdges) {
+  EXPECT_EQ(gpre::philox_uniform_f32(0U), 0x1p-24F);
+  EXPECT_EQ(gpre::philox_uniform_f32(0xFFFFFFFFU), 1.0F - 0x1p-24F);
+  EXPECT_LT(gpre::philox_uniform_f32(0xFFFFFFFFU), 1.0F);
+  EXPECT_EQ(gpre::philox_uniform_f64(0U, 0U), 0x1p-53);
+  EXPECT_EQ(gpre::philox_uniform_f64(0xFFFFFFFFU, 0xFFFFFFFFU), 1.0 - 0x1p-53);
+  EXPECT_EQ(gpre::philox_uniform_f32(0x80000000U), 0.5F + 0x1p-24F);
+}
+
 // Counter-based output must not depend on which thread computes it.
 TEST(Philox, ThreadCountInvariance) {
   constexpr std::size_t kN = std::size_t{1} << 14U;
