@@ -1,0 +1,7 @@
+# Benchmark sizes, repetitions and backends (FR-26). Used from M2/M6.
+reps: 10
+warmup: 3
+paths_log2: [16, 18, 20, 22, 24]
+steps: [64, 252]
+backends: [cuda, jax, numpy, cpp]
+products: [european, asian, barrier, heston_european, lsm]

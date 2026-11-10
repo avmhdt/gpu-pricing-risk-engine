@@ -1,0 +1,22 @@
+{
+  "backend": "",
+  "command": "gpre data check --strict",
+  "config": {},
+  "config_hash": "",
+  "config_path": "",
+  "dtype": "",
+  "finished_utc": "2026-11-10T00:03:33Z",
+  "git_hash": "9c4c69bff3de",
+  "hardware": {},
+  "key_metric": {
+    "name": "passed",
+    "value": 1
+  },
+  "notes": "",
+  "outputs": [
+    "results/data_check.json"
+  ],
+  "run_id": "20261110T000332Z-12cdae",
+  "seed": null,
+  "started_utc": "2026-11-10T00:03:32Z"
+}

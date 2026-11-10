@@ -1,0 +1,75 @@
+{
+  "checks": [
+    {
+      "detail": "",
+      "name": "yields",
+      "rule": "DQ-02",
+      "stats": {
+        "dates": 3652,
+        "dates_with_lt_6_tenors": 0,
+        "filled_values": 1672,
+        "first": "2012-01-03",
+        "last": "2025-12-31",
+        "series": 11
+      },
+      "status": "pass"
+    },
+    {
+      "detail": "",
+      "name": "prices",
+      "rule": "DQ-03",
+      "stats": {
+        "calendar_days": 3520,
+        "calendar_symbol": "SPY",
+        "first": "2012-01-03",
+        "last": "2025-12-31",
+        "names_starting_late": 0,
+        "names_with_gaps": 0,
+        "rows": 176000,
+        "symbols": 50
+      },
+      "status": "pass"
+    },
+    {
+      "detail": "",
+      "name": "corporate_actions",
+      "rule": "DQ-04",
+      "stats": {
+        "flagged": 0,
+        "split_like": 0,
+        "unexplained": 0
+      },
+      "status": "pass"
+    },
+    {
+      "detail": "",
+      "name": "surface",
+      "rule": "DQ-05",
+      "stats": {
+        "density_mass_max_err": 0.0002545485069739284,
+        "min_calendar_dw": 0.0030205752210083476,
+        "min_g": 0.26684899025236897,
+        "n_maturities": 4,
+        "passed": true,
+        "surface": "synthetic (D-05)"
+      },
+      "status": "pass"
+    },
+    {
+      "detail": "",
+      "name": "raw_manifest",
+      "rule": "DQ-09",
+      "stats": {
+        "entries": 62,
+        "problems": 0
+      },
+      "status": "pass"
+    }
+  ],
+  "passed": true,
+  "price_source": {
+    "snapshot_through": "2026-10-30",
+    "source": "stooq"
+  },
+  "strict": true
+}

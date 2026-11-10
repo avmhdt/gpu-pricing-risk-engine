@@ -1,0 +1,164 @@
+{
+  "schema": "vsm.surface.v1",
+  "underlying": "SYNTH",
+  "venue": "synthetic",
+  "as_of": "2025-12-31T21:00:00Z",
+  "as_of_ns": 1767214800000000000,
+  "spot": {
+    "index_name": "synthetic",
+    "value": 100.0
+  },
+  "conventions": {
+    "option_style": "european",
+    "settlement": "cash_usd",
+    "premium_currency": "USD",
+    "pricing": "Black-76 on the expiry forward, discounted with discount_factor",
+    "year_fraction": "ACT/365 seconds",
+    "expiry_time_utc": "21:00:00",
+    "moneyness": "k = ln(K/F)",
+    "total_variance": "w = sigma^2 * t",
+    "coin_rate": "implied"
+  },
+  "canonical": "svi",
+  "ssvi": null,
+  "expiries": [
+    {
+      "expiry": "2026-01-31T07:00:00Z",
+      "expiry_ns": 1769842800000000000,
+      "t": 0.08333333333333333,
+      "forward": 100.16680563274821,
+      "forward_method": "future",
+      "forward_se": null,
+      "discount_factor": 0.9975031223974601,
+      "basis_annualized": 0.019999999999999997,
+      "dividend_yield": 0.01,
+      "svi_raw": {
+        "a": 0.0008499999999999998,
+        "b": 0.028819520885211745,
+        "rho": -0.7,
+        "m": 0.04048182033676076,
+        "sigma": 0.0412997175131582
+      },
+      "slice_source": "ssvi_fallback",
+      "k_range_quoted": [
+        -1.0,
+        1.0
+      ],
+      "fit": {
+        "n_quotes": 0,
+        "n_liquid": 0,
+        "rmse_iv_bp": 0.0,
+        "within_spread_frac": null
+      }
+    },
+    {
+      "expiry": "2026-04-02T03:00:00Z",
+      "expiry_ns": 1775098800000000000,
+      "t": 0.25,
+      "forward": 100.5012520859401,
+      "forward_method": "future",
+      "forward_se": null,
+      "discount_factor": 0.9925280548191384,
+      "basis_annualized": 0.019999999999999997,
+      "dividend_yield": 0.01,
+      "svi_raw": {
+        "a": 0.0004249999999999999,
+        "b": 0.014409760442605873,
+        "rho": -0.7,
+        "m": 0.07034912934784623,
+        "sigma": 0.07177046746399246
+      },
+      "slice_source": "ssvi_fallback",
+      "k_range_quoted": [
+        -1.0,
+        1.0
+      ],
+      "fit": {
+        "n_quotes": 0,
+        "n_liquid": 0,
+        "rmse_iv_bp": 0.0,
+        "within_spread_frac": null
+      }
+    },
+    {
+      "expiry": "2026-07-02T09:00:00Z",
+      "expiry_ns": 1782982800000000000,
+      "t": 0.5,
+      "forward": 101.00501670841679,
+      "forward_method": "future",
+      "forward_se": null,
+      "discount_factor": 0.9851119396030626,
+      "basis_annualized": 0.019999999999999997,
+      "dividend_yield": 0.01,
+      "svi_raw": {
+        "a": 0.0051,
+        "b": 0.0700140042014005,
+        "rho": -0.7,
+        "m": 0.09997999799959989,
+        "sigma": 0.102
+      },
+      "slice_source": "ssvi_fallback",
+      "k_range_quoted": [
+        -1.0,
+        1.0
+      ],
+      "fit": {
+        "n_quotes": 0,
+        "n_liquid": 0,
+        "rmse_iv_bp": 0.0,
+        "within_spread_frac": null
+      }
+    },
+    {
+      "expiry": "2026-12-31T21:00:00Z",
+      "expiry_ns": 1798750800000000000,
+      "t": 1.0,
+      "forward": 102.02013400267558,
+      "forward_method": "future",
+      "forward_se": null,
+      "discount_factor": 0.9704455335485082,
+      "basis_annualized": 0.019999999999999997,
+      "dividend_yield": 0.01,
+      "svi_raw": {
+        "a": 0.0102,
+        "b": 0.09805806756909201,
+        "rho": -0.7,
+        "m": 0.14277254638059797,
+        "sigma": 0.145657131648265
+      },
+      "slice_source": "ssvi_fallback",
+      "k_range_quoted": [
+        -1.0,
+        1.0
+      ],
+      "fit": {
+        "n_quotes": 0,
+        "n_liquid": 0,
+        "rmse_iv_bp": 0.0,
+        "within_spread_frac": null
+      }
+    }
+  ],
+  "arbitrage": {
+    "passed": true,
+    "min_g": 0.26684899025236897,
+    "min_calendar_dw": 0.0030205752210083476,
+    "density_mass_max_err": 0.0002545485069739284,
+    "grid": {
+      "z_min": -1.0,
+      "z_max": 1.0,
+      "n": 201
+    }
+  },
+  "heston": null,
+  "sabr": [],
+  "local_vol": null,
+  "provenance": {
+    "vsm_version": "n/a",
+    "git_sha": "",
+    "config_hash": "",
+    "snapshot_id": "synthetic-calendar-arbitrage",
+    "created_at": "2025-12-31T21:00:00Z",
+    "producer": "synthetic"
+  }
+}

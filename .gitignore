@@ -40,3 +40,15 @@ Thumbs.db
 
 # Local build spec (kept out of the public repo)
 SPEC.html
+
+# The data/ rule above also matches the package's own data module and schema folder
+!src/gpre/data/
+!src/gpre/data/**
+# Small synthetic fixtures are committed (NFR-05)
+!tests/fixtures/*.parquet
+# Local outputs
+.coverage
+coverage.xml
+.hypothesis/
+# Re-ignore caches inside the re-included data package
+__pycache__/

@@ -1,0 +1,29 @@
+{
+  "compute_capability": "",
+  "cpp_baseline": "/home/ze/build/gpu-pricing-risk-engine/cpp/gpre_cpu_baseline",
+  "cpp_baseline_present": false,
+  "cpu_cores": 16,
+  "cpu_model": "Intel(R) Core(TM) i9-14900K",
+  "cpu_threads": 32,
+  "cuda_version": "",
+  "cupy_version": "",
+  "driver_version": "",
+  "gpre_version": "0.1.0",
+  "gpu_name": "",
+  "host": "ASTOGIRO",
+  "jax_backend": "cpu",
+  "jax_devices": [
+    "cpu:0"
+  ],
+  "jax_gpu": false,
+  "jax_version": "0.12.0.1",
+  "kernel": "6.18.54.1-microsoft-standard-WSL2",
+  "numpy_version": "2.5.4",
+  "os": "Ubuntu 22.04.5 LTS",
+  "platform": "local",
+  "python_version": "3.12.15",
+  "ram_gb": 62.7,
+  "scipy_version": "1.18.1",
+  "vram_gb": 0.0,
+  "wsl": true
+}

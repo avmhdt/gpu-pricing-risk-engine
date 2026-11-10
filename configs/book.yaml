@@ -1,0 +1,11 @@
+# Synthetic 10,000-position book (D-06). Used from M5.
+n_positions: 10000
+n_underlyings: 50
+seed: 20261030
+mix: {european: 0.60, asian: 0.20, barrier: 0.15, american: 0.05}
+tenors_years: [0.0833333333333333, 0.25, 0.5, 1.0]
+strike_rel: {min: 0.8, max: 1.2}
+quantity: {min: 1, max: 100, signed: true}
+asian: {fixings: monthly}
+barrier: {monitoring: daily, kinds: [up-out, up-in, down-out, down-in]}
+american: {method: leisen_reimer, steps: 201}
