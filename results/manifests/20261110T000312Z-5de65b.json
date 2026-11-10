@@ -1,0 +1,26 @@
+{
+  "backend": "",
+  "command": "gpre ingest fred --start 2012-01-01 --end 2025-12-31",
+  "config": {
+    "end": "2025-12-31",
+    "start": "2012-01-01"
+  },
+  "config_hash": "33518adeb89b1b09",
+  "config_path": "",
+  "dtype": "",
+  "finished_utc": "2026-11-10T00:03:28Z",
+  "git_hash": "9c4c69bff3de",
+  "hardware": {},
+  "key_metric": {
+    "name": "source",
+    "value": "fredgraph_csv"
+  },
+  "notes": "",
+  "outputs": [
+    "/home/ze/data/gpu-pricing-risk-engine/processed/yields.parquet",
+    "/home/ze/data/gpu-pricing-risk-engine/processed/vix.parquet"
+  ],
+  "run_id": "20261110T000312Z-5de65b",
+  "seed": null,
+  "started_utc": "2026-11-10T00:03:12Z"
+}

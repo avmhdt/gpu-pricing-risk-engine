@@ -1,0 +1,50 @@
+{
+  "backend": "",
+  "command": "gpre env",
+  "config": {},
+  "config_hash": "",
+  "config_path": "",
+  "dtype": "",
+  "finished_utc": "2026-11-10T00:03:12Z",
+  "git_hash": "9c4c69bff3de",
+  "hardware": {
+    "compute_capability": "",
+    "cpp_baseline": "/home/ze/build/gpu-pricing-risk-engine/cpp/gpre_cpu_baseline",
+    "cpp_baseline_present": false,
+    "cpu_cores": 16,
+    "cpu_model": "Intel(R) Core(TM) i9-14900K",
+    "cpu_threads": 32,
+    "cuda_version": "",
+    "cupy_version": "",
+    "driver_version": "",
+    "gpre_version": "0.1.0",
+    "gpu_name": "",
+    "host": "ASTOGIRO",
+    "jax_backend": "cpu",
+    "jax_devices": [
+      "cpu:0"
+    ],
+    "jax_gpu": false,
+    "jax_version": "0.12.0.1",
+    "kernel": "6.18.54.1-microsoft-standard-WSL2",
+    "numpy_version": "2.5.4",
+    "os": "Ubuntu 22.04.5 LTS",
+    "platform": "local",
+    "python_version": "3.12.15",
+    "ram_gb": 62.7,
+    "scipy_version": "1.18.1",
+    "vram_gb": 0.0,
+    "wsl": true
+  },
+  "key_metric": {
+    "name": "jax_backend",
+    "value": "cpu"
+  },
+  "notes": "",
+  "outputs": [
+    "results/hardware/ASTOGIRO.json"
+  ],
+  "run_id": "20261110T000311Z-c02be6",
+  "seed": null,
+  "started_utc": "2026-11-10T00:03:11Z"
+}
