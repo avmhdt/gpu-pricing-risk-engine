@@ -78,6 +78,18 @@ GPRE_HD Philox4x32Key philox_key_from_seed(unsigned long long seed) {
   return key;
 }
 
+// Uniforms strictly inside (0, 1), exact in their precision (docs/rng.md, FR-03).
+// float32: one word, u = ((x >> 9) + 0.5) * 2^-23  (four uniforms per Philox call).
+GPRE_HD float philox_uniform_f32(unsigned int x) {
+  return (static_cast<float>(x >> 9U) + 0.5F) * 1.1920928955078125e-07F;
+}
+
+// float64: two words, u = ((a << 20 | b >> 12) + 0.5) * 2^-52  (two uniforms per call).
+GPRE_HD double philox_uniform_f64(unsigned int a, unsigned int b) {
+  const unsigned long long k = (static_cast<unsigned long long>(a) << 20U) | (b >> 12U);
+  return (static_cast<double>(k) + 0.5) * 2.220446049250313080847263336181640625e-16;
+}
+
 }  // namespace gpre
 
 #endif  // GPRE_PHILOX4X32_CUH_

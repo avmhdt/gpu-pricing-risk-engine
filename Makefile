@@ -10,7 +10,7 @@ PYTEST_CPU := -m "not gpu and not bench and not data"
 CPP_SOURCES := cpp/include/gpre/*.hpp cpp/tests/*.cpp src/gpre/cuda/kernels/*.cuh src/gpre/cuda/kernels/*.cu
 
 .PHONY: setup setup-gpu lint type test test-gpu cpp cpp-asan cpp-tsan env data-smoke validate \
-        bench profile risk report all fixtures verify-ac-w-06 verify-ac-w-12 verify-ac-w-13
+        bench profile risk report all fixtures verify-ac-w-01 verify-ac-w-06 verify-ac-w-12 verify-ac-w-13
 
 setup:
 	$(UV) sync --group dev
@@ -69,5 +69,15 @@ verify-ac-w-12: lint type test cpp cpp-asan cpp-tsan
 
 verify-ac-w-13: data-smoke
 
-validate bench profile risk report all:
+# GPU backends are included when a CUDA device is present (cloud instance); CPU-only otherwise.
+VALIDATE_BACKENDS ?= numpy,jax$(shell $(UV) run python -c "import cupy" >/dev/null 2>&1 && echo ,cuda)
+
+validate:
+	$(UV) run gpre validate --suite rng
+	JAX_ENABLE_X64=1 $(UV) run gpre validate --suite european --backends $(VALIDATE_BACKENDS)
+
+verify-ac-w-01:
+	JAX_ENABLE_X64=1 $(UV) run gpre validate --suite european --backends $(VALIDATE_BACKENDS)
+
+bench profile risk report all:
 	@echo "make $@ arrives in a later milestone (SPEC section 13)"; exit 1
