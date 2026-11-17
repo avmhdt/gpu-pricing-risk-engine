@@ -74,7 +74,7 @@ full table is M6.
 ### 5. Copy results back (from this PC, in WSL)
 
 ```bash
-cd /mnt/d/trading-strategy-brainstorm/gpu-pricing-risk-engine
+cd /mnt/g/trading-strategy-brainstorm/gpu-pricing-risk-engine
 rsync -av ubuntu@<public-ip>:gpre/results/ ./results/
 ```
 

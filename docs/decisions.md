@@ -75,7 +75,7 @@ Owner decisions that apply to this project, copied from the portfolio's `DECISIO
 - **Run manifests** are committed under `results/manifests/<run_id>.json`; per-run JSON logs stay
   local in `results/logs/` (git-ignored).
 - **Development venv.** Kept on WSL ext4 via `UV_PROJECT_ENVIRONMENT`
-  (`~/build/gpu-pricing-risk-engine/venv`), since `/mnt/d` is slow from WSL.
+  (`~/build/gpu-pricing-risk-engine/venv`), since the Windows drives (`/mnt/*`) are slow from WSL.
 
 ### M2 (2026-11-09, CPU side; GPU checks pending the first Hyperstack session)
 
